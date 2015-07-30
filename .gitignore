@@ -1,2 +1,4 @@
 config.sh
 *.xml
+.java
+config/*

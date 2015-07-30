@@ -2,7 +2,7 @@
 
 usage() {
     PROG="$(basename $0)"
-    echo "usage: ${PROG} <config directory>"
+    echo "usage: ${PROG} <config file>"
 }
 
 SCRIPT_DIR="$( cd -P "$( dirname "$BASH_SOURCE[0]" )" && pwd )"
@@ -14,22 +14,11 @@ then
     exit 1
 fi
 
-if [ -z "${DISPLAY}" ];
-then
-    echo "DISPLAY variable not set.  Please make sure X11 forwarding is on"
-    exit 1
-fi
-
-if [ ! -f "${XAUTHORITY}" ];
-then
-    echo "The Xauthority file `${XAUTHORITY}`  does not exist"
-    echo "Try connecting correctly using SSH with X11 Forwarding"
-    exit 2
-fi
-
 PREFS_DIR="${SCRIPT_DIR}/.java"
 
-CONFIG_DIR="$( cd -P "$1" && pwd )"
+CONFIG_DIR="$( cd -P "$( dirname "$1" )" && pwd )"
+CONFIG_FILE="$( basename $1 )"
+CONFIG_PATH="${CONFIG_DIR}/${CONFIG_FILE}"
 
 if [ ! -d "${PREFS_DIR}" ];
 then
@@ -37,9 +26,9 @@ then
     exit 3
 fi
 
-if [ ! -d "${CONFIG_DIR}" ];
+if [ ! -f "${CONFIG_PATH}" ];
 then
-    echo "Config directory ${CONFIG_DIR} not found...exiting"
+    echo "Config file ${CONFIG_PATH} not found...exiting"
     exit 4
 fi
 
@@ -54,10 +43,9 @@ then
 fi
 
 $SUDO docker run $TTY --rm \
-       -e DISPLAY=$DISPLAY \
-       -v $XAUTHORITY:/root/.Xauthority \
+       --name gads \
+       --hostname gads \
        -v $CONFIG_DIR:/gads/configs \
        -v $PREFS_DIR:/root/.java \
-       --net=host \
        $GADS_IMAGE \
-       /gads/config-manager
+      /gads/upgrade-config -c /gads/configs/$CONFIG_FILE
