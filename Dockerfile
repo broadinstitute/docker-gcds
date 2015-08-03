@@ -12,6 +12,8 @@ RUN apt-get update && \
     libxi6 \
     libxrender1 \
     libxtst6 \
+    python \
+    python-ldap \
     wget && \
     wget -O /tmp/dirsync-linux64.sh http://dl.google.com/dirsync/dirsync-linux64.sh && \
     cd /tmp && \
