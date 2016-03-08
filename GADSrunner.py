@@ -3,30 +3,7 @@
 import ldap, os, sys
 from config import *
 
-GADS_CONFIG_DIR = "/gads/configs"
-GADS_DIR = "/gads"
-MIN_ACCTS = 1900
-
-# All the GADS commands that can be executed by this script
-GADScmds = {
-    "Test": {
-        "cmd": GADS_DIR + "/" + "sync-cmd",
-        "config": GADS_CONFIG_DIR + "/" + "OpenLDAP2GoogleAppsTest.xml"
-    },
-    "Prod": {
-        "cmd": GADS_DIR + "/" + "sync-cmd",
-        "config": GADS_CONFIG_DIR + "/" + "OpenLDAP2GoogleAppsProd.xml"
-    }
-}
-
-# // If any parameters were passed to this script, assume they mean which GADS to run
-# $runSelector = NULL;
-# if (count($_SERVER["argv"]) > 1) {
-#     $args = $_SERVER["argv"];
-#     for ($i = 1; $i < count($args); $i++) {
-#         $runSelector[] = $args[$i];
-#     }
-# }
+MIN_ACCTS = 2500
 
 # connect to ldap
 def connect(ldap_uri, ldap_bind_dn, ldap_bind_pw):
@@ -57,7 +34,12 @@ def checkLdap(ldapdb, basedn):
     if count < MIN_ACCTS:
         raise Exception("%d accounts is below minimum of %d" % (count, MIN_ACCTS))
 
-def runGads():
+def runGads(script_dir, configfile):
+    sync_cmd = "%s/sync-cmd.sh" % script_dir
+
+    print sync_cmd
+    print configfile
+
     return 0
     # Run through each GADS command
     # foreach ($GADScmds as $name => $cmd) {
@@ -97,6 +79,9 @@ def runGads():
 
 
 def main():
+    script_path = os.path.abspath(__file__)
+    script_dir = os.path.dirname(script_path)
+
     # Bind to LDAP server
     try:
         ldapdb = connect(
@@ -115,8 +100,7 @@ def main():
         return 2
 
     try:
-        print "hello"
-        # runGads()
+        runGads(script_dir, gads_config)
     except Exception, e:
         print e
         return 3
