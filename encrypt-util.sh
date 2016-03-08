@@ -14,9 +14,14 @@ then
     exit 1
 fi
 
-PREFS_DIR="${SCRIPT_DIR}/.java"
+if [ -z "${DATA_DIR}" ]; then
+    echo "DATA_DIR configuration variable was not set.  Exiting!"
+    exit 2
+fi
 
-CONFIG_DIR="$( cd -P "$( dirname "$1" )" && pwd )"
+PREFS_DIR="${DATA_DIR}/.java"
+CONFIG_DIR="${DATA_DIR}/configs"
+
 CONFIG_FILE="$( basename $1 )"
 CONFIG_PATH="${CONFIG_DIR}/${CONFIG_FILE}"
 

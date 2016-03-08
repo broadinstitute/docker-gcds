@@ -2,7 +2,7 @@
 
 usage() {
     PROG="$(basename $0)"
-    echo "usage: ${PROG} <config file>"
+    echo "usage: ${PROG} <config dir>"
 }
 
 SCRIPT_DIR="$( cd -P "$( dirname "$BASH_SOURCE[0]" )" && pwd )"
@@ -19,22 +19,24 @@ if [ -z "${DATA_DIR}" ]; then
     exit 2
 fi
 
+if [ -z "${LOG_DIR}" ]; then
+    echo "LOG_DIR configuration variable was not set.  Exiting!"
+    exit 3
+fi
+
 PREFS_DIR="${DATA_DIR}/.java"
 CONFIG_DIR="${DATA_DIR}/configs"
-
-CONFIG_FILE="$( basename $1 )"
-CONFIG_PATH="${CONFIG_DIR}/${CONFIG_FILE}"
 
 if [ ! -d "${PREFS_DIR}" ];
 then
     echo "Java preferences directory ${PREFS_DIR} not found...exiting"
-    exit 3
+    exit 2
 fi
 
-if [ ! -f "${CONFIG_PATH}" ];
+if [ ! -d "${CONFIG_DIR}" ];
 then
-    echo "Config file ${CONFIG_PATH} not found...exiting"
-    exit 4
+    echo "Config directory ${CONFIG_DIR} not found...exiting"
+    exit 3
 fi
 
 if [ "$TERM" != "dumb" ];
@@ -52,5 +54,7 @@ $SUDO docker run $TTY --rm \
        --hostname gads \
        -v $CONFIG_DIR:/gads/configs \
        -v $PREFS_DIR:/root/.java \
+       -v $SCRIPT_DIR:/usr/src \
        $GADS_IMAGE \
-      /gads/upgrade-config -c /gads/configs/$CONFIG_FILE
+       /bin/bash
+       #/usr/src/GADSrunner.py $CONFIG_FILE $@

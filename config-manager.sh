@@ -2,45 +2,41 @@
 
 usage() {
     PROG="$(basename $0)"
-    echo "usage: ${PROG} <config directory>"
+    echo "usage: ${PROG}"
 }
 
 SCRIPT_DIR="$( cd -P "$( dirname "$BASH_SOURCE[0]" )" && pwd )"
 source "${SCRIPT_DIR}/config.sh"
 
-if [ -z "$1" ];
-then
-    usage
-    exit 1
-fi
-
-if [ -z "${DISPLAY}" ];
-then
+if [ -z "${DISPLAY}" ]; then
     echo "DISPLAY variable not set.  Please make sure X11 forwarding is on"
     exit 1
 fi
 
-if [ ! -f "${XAUTHORITY}" ];
-then
+if [ ! -f "${XAUTHORITY}" ]; then
     echo "The Xauthority file `${XAUTHORITY}`  does not exist"
     echo "Try connecting correctly using SSH with X11 Forwarding"
     exit 2
 fi
 
-PREFS_DIR="${SCRIPT_DIR}/.java"
+if [ -z "${DATA_DIR}" ]; then
+    echo "DATA_DIR configuration variable was not set.  Exiting!"
+    exit 3
+fi
 
-CONFIG_DIR="$( cd -P "$1" && pwd )"
+PREFS_DIR="${DATA_DIR}/.java"
+CONFIG_DIR="${DATA_DIR}/configs"
 
 if [ ! -d "${PREFS_DIR}" ];
 then
     echo "Java preferences directory ${PREFS_DIR} not found...exiting"
-    exit 3
+    exit 4
 fi
 
 if [ ! -d "${CONFIG_DIR}" ];
 then
     echo "Config directory ${CONFIG_DIR} not found...exiting"
-    exit 4
+    exit 5
 fi
 
 if [ "$TERM" != "dumb" ];
