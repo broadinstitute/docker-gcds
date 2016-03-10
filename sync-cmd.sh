@@ -68,5 +68,4 @@ $SUDO docker run $TTY --rm \
        -v $PREFS_DIR:/root/.java \
        -v $LOG_DIR:/var/log/google \
        $GADS_IMAGE \
-       /bin/bash
-      # /gads/sync-cmd -c /gads/configs/$CONFIG_FILE $@
+      /gads/sync-cmd -c /gads/configs/$CONFIG_FILE $@
