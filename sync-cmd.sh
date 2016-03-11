@@ -14,25 +14,41 @@ then
     exit 1
 fi
 
-# Tear the config file name off so we can pass the rest to GADS
-shift
+if [ -z "${DATA_DIR}" ]; then
+    echo "DATA_DIR configuration variable was not set.  Exiting!"
+    exit 2
+fi
 
-PREFS_DIR="${SCRIPT_DIR}/.java"
+if [ -z "${LOG_DIR}" ]; then
+    echo "LOG_DIR configuration variable was not set.  Exiting!"
+    exit 3
+fi
 
-CONFIG_DIR="$( cd -P "$( dirname "$1" )" && pwd )"
+PREFS_DIR="${DATA_DIR}/.java"
+CONFIG_DIR="${DATA_DIR}/configs"
+
 CONFIG_FILE="$( basename $1 )"
 CONFIG_PATH="${CONFIG_DIR}/${CONFIG_FILE}"
+
+# Tear the config file name off so we can pass the rest to GADS
+shift
 
 if [ ! -d "${PREFS_DIR}" ];
 then
     echo "Java preferences directory ${PREFS_DIR} not found...exiting"
-    exit 3
+    exit 4
+fi
+
+if [ ! -d "${LOG_DIR}" ];
+then
+    echo "Log directory ${LOG_DIR} not found...exiting"
+    exit 5
 fi
 
 if [ ! -f "${CONFIG_PATH}" ];
 then
     echo "Config file ${CONFIG_PATH} not found...exiting"
-    exit 4
+    exit 6
 fi
 
 if [ "$TERM" != "dumb" ];
@@ -50,5 +66,6 @@ $SUDO docker run $TTY --rm \
        --hostname gads \
        -v $CONFIG_DIR:/gads/configs \
        -v $PREFS_DIR:/root/.java \
+       -v $LOG_DIR:/var/log/google \
        $GADS_IMAGE \
-      /gads/upgrade-config -c /gads/configs/$CONFIG_FILE $@
+      /gads/sync-cmd -c /gads/configs/$CONFIG_FILE $@
