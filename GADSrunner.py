@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import ldap, os, sys
+import ldap, os, sys, subprocess
 from config import *
 
 MIN_ACCTS = 2500
@@ -37,46 +37,17 @@ def checkLdap(ldapdb, basedn):
 def runGads(script_dir, configfile):
     sync_cmd = "%s/sync-cmd.sh" % script_dir
 
-    print sync_cmd
-    print configfile
+    print "Executing `%s %s`" % (sync_cmd, configfile)
+
+    command = [ sync_cmd, configfile ]
+    try:
+        gads = subprocess.Popen(command)
+    except:
+        raise Exception("GADS run returned unsuccessful", stdout=subprocess.PIPE)
+
+    gads.communicate()
 
     return 0
-    # Run through each GADS command
-    # foreach ($GADScmds as $name => $cmd) {
-    #     $retVal = 0;
-    #     $output = NULL;
-
-    #     if ($runSelector) {
-    #         if (!in_array($name, $runSelector)) {
-    #             // Skip this GADS if we are running this for specific jobs and
-    #             // the current name is not one of the selected jobs
-    #             continue;
-    #         }
-    #     }
-
-    #     if (!is_executable($cmd['cmd'])) {
-    #         echo "Cannot process GADS '$name':\n";
-    #         echo "\tCommand not found: " . $cmd['cmd'] . "\n";
-    #         continue;
-    #     }
-
-    #     if (!is_readable($cmd['config'])) {
-    #         echo "Cannot process GADS '$name':\n";
-    #         echo "\tCannot find config file: " . $cmd['config'] . "\n";
-    #         continue;
-    #     }
-
-    #     $exec_cmd = $cmd['cmd'] . ' -c ' . $cmd['config'] . ' --apply';
-    #     exec($exec_cmd, $output, $retVal);
-    # /*
-    #     // GADS returns '255' for a return value for some reason, so I can't test for '0'
-    #     if ($retVal != 0) {
-    #         echo "GADS sync for '$name' did not complete successfully ($retVal)!\n";
-    #     }
-    # */
-    #     sleep(5);
-    # }
-
 
 def main():
     script_path = os.path.abspath(__file__)
