@@ -18,7 +18,7 @@ RUN apt-get update && \
     python \
     python-ldap \
     wget && \
-    wget -O /tmp/dirsync-linux64.sh http://dl.google.com/dirsync/google/googleappsdirsync_linux_64bit_${GADS_MAJOR}_${GADS_MINOR}_${GADS_PATCH}.sh && \
+    wget -O /tmp/dirsync-linux64.sh https://dl.google.com/dirsync/google/googleappsdirsync_linux_64bit_${GADS_MAJOR}_${GADS_MINOR}_${GADS_PATCH}.sh && \
     cd /tmp && \
     /bin/sh dirsync-linux64.sh -q -varfile /tmp/gads.varfile && \
     apt-get -yq clean && \
