@@ -2,8 +2,8 @@ FROM ubuntu:14.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
     GADS_MAJOR=4 \
-    GADS_MINOR=2 \
-    GADS_PATCH=0
+    GADS_MINOR=3 \
+    GADS_PATCH=2
 
 ENV GADS_VERSION=${GADS_MAJOR}.${GADS_MINOR}.${GADS_PATCH}
 
@@ -18,7 +18,7 @@ RUN apt-get update && \
     python \
     python-ldap \
     wget && \
-    wget -O /tmp/dirsync-linux64.sh http://dl.google.com/dirsync/google/googleappsdirsync_linux_64bit_${GADS_MAJOR}_${GADS_MINOR}_${GADS_PATCH}.sh && \
+    wget -O /tmp/dirsync-linux64.sh https://dl.google.com/dirsync/google/googleappsdirsync_linux_64bit_${GADS_MAJOR}_${GADS_MINOR}_${GADS_PATCH}.sh && \
     cd /tmp && \
     /bin/sh dirsync-linux64.sh -q -varfile /tmp/gads.varfile && \
     apt-get -yq clean && \
