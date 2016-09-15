@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import ldap, os, sys, subprocess
+import argparse
 from config import *
 
 MIN_ACCTS = 2500
@@ -34,12 +35,16 @@ def checkLdap(ldapdb, basedn):
     if count < MIN_ACCTS:
         raise Exception("%d accounts is below minimum of %d" % (count, MIN_ACCTS))
 
-def runGads(script_dir, configfile):
+def runGads(script_dir, configfile, do_apply):
     sync_cmd = "%s/sync-cmd.sh" % script_dir
 
-    print "Executing `%s %s`" % (sync_cmd, configfile)
+    apply_option = ''
+    if do_apply:
+        apply_option = "--apply"
 
-    command = [ sync_cmd, configfile ]
+    print "Executing `%s -c %s %s`" % (sync_cmd, configfile, apply_option)
+
+    command = [ sync_cmd, "-c", configfile, apply_option ]
     try:
         gads = subprocess.Popen(command)
     except:
@@ -52,6 +57,10 @@ def runGads(script_dir, configfile):
 def main():
     script_path = os.path.abspath(__file__)
     script_dir = os.path.dirname(script_path)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--apply', action='store_true')
+    args = parser.parse_args()
 
     # Bind to LDAP server
     try:
@@ -71,7 +80,7 @@ def main():
         return 2
 
     try:
-        runGads(script_dir, gads_config)
+        runGads(script_dir, gads_config, args.apply)
     except Exception, e:
         print e
         return 3
