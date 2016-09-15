@@ -62,7 +62,6 @@ then
 fi
 
 $SUDO docker run $TTY --rm \
-       --name gads \
        --hostname gads \
        -v $CONFIG_DIR:/gads/configs \
        -v $PREFS_DIR:/root/.java \
