@@ -42,9 +42,9 @@ def runGads(script_dir, configfile, do_apply):
     if do_apply:
         apply_option = "--apply"
 
-    print "Executing `%s -c %s %s`" % (sync_cmd, configfile, apply_option)
+    print "Executing `%s %s %s`" % (sync_cmd, configfile, apply_option)
 
-    command = [ sync_cmd, "-c", configfile, apply_option ]
+    command = [ sync_cmd, configfile, apply_option ]
     try:
         gads = subprocess.Popen(command)
     except:
