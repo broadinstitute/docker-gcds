@@ -26,6 +26,7 @@ fi
 
 PREFS_DIR="${DATA_DIR}/.java"
 CONFIG_DIR="${DATA_DIR}/configs"
+STATE_DIR="${DATA_DIR}/state"
 
 CONFIG_FILE="$( basename $1 )"
 CONFIG_PATH="${CONFIG_DIR}/${CONFIG_FILE}"
@@ -64,6 +65,7 @@ fi
 $SUDO docker run $TTY --rm \
        --hostname gads \
        -v $CONFIG_DIR:/gads/configs \
+       -v $STATE_DIR:/root/syncState \
        -v $PREFS_DIR:/root/.java \
        -v $LOG_DIR:/var/log/google \
        $GADS_IMAGE \
