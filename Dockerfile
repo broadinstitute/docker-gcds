@@ -1,26 +1,18 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    GADS_MAJOR=4 \
-    GADS_MINOR=3 \
-    GADS_PATCH=2
+    GADS_VERSION=4.4.22
 
-ENV GADS_VERSION=${GADS_MAJOR}.${GADS_MINOR}.${GADS_PATCH}
-
-ADD gads.varfile /tmp/gads.varfile
+COPY gads.varfile /tmp/gads.varfile
 
 RUN apt-get update && \
-    apt-get -yq install \
-    libxext6 \
-    libxi6 \
-    libxrender1 \
-    libxtst6 \
-    python \
-    python-ldap \
-    wget && \
-    wget -O /tmp/dirsync-linux64.sh https://dl.google.com/dirsync/google/googleappsdirsync_linux_64bit_${GADS_MAJOR}_${GADS_MINOR}_${GADS_PATCH}.sh && \
+    apt-get upgrade -yq && \
+    apt-get -yq install libxext6 libxi6 libxrender1 libxtst6 python \
+    python-ldap wget && \
     cd /tmp && \
+    wget https://dl.google.com/dirsync/dirsync-linux64.sh && \
     /bin/sh dirsync-linux64.sh -q -varfile /tmp/gads.varfile && \
+    apt-get autoremove -y && \
     apt-get -yq clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/* && \
