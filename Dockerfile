@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    GADS_VERSION=4.4.22
+    GADS_VERSION=4.4.26
 
 COPY gads.varfile /tmp/gads.varfile
 
