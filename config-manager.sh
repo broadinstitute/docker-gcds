@@ -52,8 +52,8 @@ fi
 $SUDO docker run $TTY --rm \
        -e DISPLAY=$DISPLAY \
        -v $XAUTHORITY:/root/.Xauthority \
-       -v $CONFIG_DIR:/gads/configs \
+       -v $CONFIG_DIR:/gcds/configs \
        -v $PREFS_DIR:/root/.java \
        --net=host \
        $GADS_IMAGE \
-       /gads/config-manager
+       /gcds/config-manager

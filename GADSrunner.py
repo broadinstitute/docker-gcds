@@ -1,19 +1,23 @@
 #!/usr/bin/env python
 
-import ldap, os, sys, subprocess
+import ldap
+import os
+import sys
+import subprocess
 import argparse
 from config import *
 
 MIN_ACCTS = 2500
 
-# connect to ldap
+
 def connect(ldap_uri, ldap_bind_dn, ldap_bind_pw):
 
-    l = ldap.initialize(ldap_uri)
-    l.protocol_version = ldap.VERSION3
-    l.simple_bind(ldap_bind_dn, ldap_bind_pw)
+    ldapc = ldap.initialize(ldap_uri)
+    ldapc.protocol_version = ldap.VERSION3
+    ldapc.simple_bind(ldap_bind_dn, ldap_bind_pw)
 
-    return l
+    return ldapc
+
 
 def checkLdap(ldapdb, basedn):
     count = 0
@@ -33,9 +37,12 @@ def checkLdap(ldapdb, basedn):
                 count = count + 1
 
     if count < MIN_ACCTS:
-        raise Exception("%d accounts is below minimum of %d" % (count, MIN_ACCTS))
+        raise Exception(
+            "%d accounts is below minimum of %d" % (count, MIN_ACCTS)
+        )
 
-def runGads(script_dir, configfile, do_apply):
+
+def runGCDS(script_dir, configfile, do_apply):
     sync_cmd = "%s/sync-cmd.sh" % script_dir
 
     apply_option = ''
@@ -44,15 +51,16 @@ def runGads(script_dir, configfile, do_apply):
 
     print "Executing `%s %s %s`" % (sync_cmd, configfile, apply_option)
 
-    command = [ sync_cmd, configfile, apply_option ]
+    command = [sync_cmd, configfile, apply_option]
     try:
-        gads = subprocess.Popen(command)
-    except:
-        raise Exception("GADS run returned unsuccessful", stdout=subprocess.PIPE)
+        gcds = subprocess.Popen(command)
+    except Exception, e:
+        raise Exception("GCDS run returned unsuccessful: %s", e)
 
-    gads.communicate()
+    gcds.communicate()
 
     return 0
+
 
 def main():
     script_path = os.path.abspath(__file__)
@@ -80,10 +88,11 @@ def main():
         return 2
 
     try:
-        runGads(script_dir, gads_config, args.apply)
+        runGCDS(script_dir, gads_config, args.apply)
     except Exception, e:
         print e
         return 3
+
 
 if __name__ == "__main__":
     ret = main()

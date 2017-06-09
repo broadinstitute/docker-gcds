@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 debug = True
-gads_config = "GADSconfig.xml"
+gads_config = "GCDSconfig.xml"
 google_ldap_new_prod = {
     "ldap_uri": "ldap://ldap.example.org",
     "ldap_base_dn": "ou=theou,dc=example,dc=org",

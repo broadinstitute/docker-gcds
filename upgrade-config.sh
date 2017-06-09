@@ -48,8 +48,8 @@ then
 fi
 
 $SUDO docker run $TTY --rm \
-       --hostname gads \
-       -v $CONFIG_DIR:/gads/configs \
+       --hostname gcds \
+       -v $CONFIG_DIR:/gcds/configs \
        -v $PREFS_DIR:/root/.java \
        $GADS_IMAGE \
-      /gads/upgrade-config -c /gads/configs/$CONFIG_FILE
+      /gcds/upgrade-config -c /gcds/configs/$CONFIG_FILE
