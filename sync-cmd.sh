@@ -2,7 +2,7 @@
 
 usage() {
     PROG="$(basename $0)"
-    echo "usage: ${PROG} <config file> [GADS options]"
+    echo "usage: ${PROG} <config file> [GCDS options]"
 }
 
 SCRIPT_DIR="$( cd -P "$( dirname "$BASH_SOURCE[0]" )" && pwd )"
@@ -31,7 +31,7 @@ STATE_DIR="${DATA_DIR}/state"
 CONFIG_FILE="$( basename $1 )"
 CONFIG_PATH="${CONFIG_DIR}/${CONFIG_FILE}"
 
-# Tear the config file name off so we can pass the rest to GADS
+# Tear the config file name off so we can pass the rest to GCDS
 shift
 
 if [ ! -d "${PREFS_DIR}" ];
@@ -63,10 +63,10 @@ then
 fi
 
 $SUDO docker run $TTY --rm \
-       --hostname gads \
-       -v $CONFIG_DIR:/gads/configs \
+       --hostname gcds \
+       -v $CONFIG_DIR:/gcds/configs \
        -v $STATE_DIR:/root/syncState \
        -v $PREFS_DIR:/root/.java \
        -v $LOG_DIR:/var/log/google \
        $GADS_IMAGE \
-      /gads/sync-cmd -c /gads/configs/$CONFIG_FILE $@
+      /gcds/sync-cmd -c /gcds/configs/$CONFIG_FILE $@
