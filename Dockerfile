@@ -14,7 +14,7 @@ RUN apt-get update && \
     apt-get -yq install libxext6 libxi6 libxrender1 libxtst6 python \
     python-ldap wget && \
     cd /tmp && \
-    wget -O /tmp/dirsync-linux64.sh https://dl.google.com/dirsync/Google/GoogleCloudDirSync_linux_64bit_${GADS_MAJOR}_${GADS_MINOR}_${GADS_PATCH}.sh
+    wget -O /tmp/dirsync-linux64.sh https://dl.google.com/dirsync/Google/GoogleCloudDirSync_linux_64bit_${GADS_MAJOR}_${GADS_MINOR}_${GADS_PATCH}.sh && \
     /bin/sh dirsync-linux64.sh -q -varfile /tmp/gads.varfile && \
     apt-get autoremove -y && \
     apt-get -yq clean && \
