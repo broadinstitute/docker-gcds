@@ -15,4 +15,4 @@ fi
 
 $SUDO docker run $TTY --rm \
        $GADS_IMAGE \
-       /gads/checkforupdate
+       /gcds/checkforupdate

@@ -1,6 +1,6 @@
 sys.programGroup.linkDir=/usr/bin
 sys.languageId=en
-sys.installationDir=/gads
+sys.installationDir=/gcds
 sys.programGroup.enabled$Boolean=true
 sys.programGroup.allUsers$Boolean=true
-sys.programGroup.name=Google Apps Directory Sync
+sys.programGroup.name=Google Cloud Directory Sync
