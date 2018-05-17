@@ -57,11 +57,12 @@ if [ ! -w "${DOCKER_SOCKET}" ]; then
     SUDO='sudo'
 fi
 
+# shellcheck disable=SC2068
 $SUDO docker run $TTY --rm \
-       --hostname gcds \
-       -v "${CONFIG_DIR}":/gcds/configs \
-       -v "${STATE_DIR}":/root/syncState \
-       -v "${PREFS_DIR}":/root/.java \
-       -v "${LOG_DIR}":/var/log/google \
-       "${GCDS_IMAGE}" \
-      /gcds/sync-cmd -c "/gcds/configs/${CONFIG_FILE}" "$@"
+        --hostname gcds \
+        -v "${CONFIG_DIR}":/gcds/configs \
+        -v "${STATE_DIR}":/root/syncState \
+        -v "${PREFS_DIR}":/root/.java \
+        -v "${LOG_DIR}":/var/log/google \
+        "${GCDS_IMAGE}" \
+        /gcds/sync-cmd -c "/gcds/configs/${CONFIG_FILE}" $@

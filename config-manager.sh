@@ -47,10 +47,10 @@ if [ ! -w "${DOCKER_SOCKET}" ]; then
 fi
 
 $SUDO docker run $TTY --rm \
-       -e DISPLAY="${DISPLAY}" \
-       -v "${XAUTHORITY}:/root/.Xauthority" \
-       -v "${CONFIG_DIR}:/gcds/configs" \
-       -v "${PREFS_DIR}:/root/.java" \
-       --net=host \
-       "${GCDS_IMAGE}" \
-       /gcds/config-manager
+        -e DISPLAY="${DISPLAY}" \
+        -v "${XAUTHORITY}:/root/.Xauthority" \
+        -v "${CONFIG_DIR}:/gcds/configs" \
+        -v "${PREFS_DIR}:/root/.java" \
+        --net=host \
+        "${GCDS_IMAGE}" \
+        /gcds/config-manager

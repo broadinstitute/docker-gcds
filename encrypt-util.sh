@@ -44,8 +44,8 @@ if [ ! -w "${DOCKER_SOCKET}" ]; then
 fi
 
 $SUDO docker run $TTY --rm \
-       --hostname gcds \
-       -v "${CONFIG_DIR}":/gcds/configs \
-       -v "${PREFS_DIR}":/root/.java \
-       "${GCDS_IMAGE}" \
-      /gcds/encrypt-util -c "/gcds/configs/${CONFIG_FILE}"
+        --hostname gcds \
+        -v "${CONFIG_DIR}":/gcds/configs \
+        -v "${PREFS_DIR}":/root/.java \
+        "${GCDS_IMAGE}" \
+        /gcds/encrypt-util -c "/gcds/configs/${CONFIG_FILE}"

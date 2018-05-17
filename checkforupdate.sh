@@ -15,5 +15,5 @@ then
 fi
 
 $SUDO docker run $TTY --rm \
-       "${GCDS_IMAGE}" \
-       /gcds/checkforupdate
+        "${GCDS_IMAGE}" \
+        /gcds/checkforupdate
