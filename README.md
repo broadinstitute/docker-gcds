@@ -1,4 +1,4 @@
-# docker-gads
+# docker-gcds
 Google Cloud Directory Sync - GSuite synchronization tool:
 
 https://support.google.com/a/answer/106368?hl=en

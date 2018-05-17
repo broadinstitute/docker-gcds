@@ -63,5 +63,5 @@ $SUDO docker run $TTY --rm \
        -v "${STATE_DIR}":/root/syncState \
        -v "${PREFS_DIR}":/root/.java \
        -v "${LOG_DIR}":/var/log/google \
-       "${GADS_IMAGE}" \
+       "${GCDS_IMAGE}" \
       /gcds/sync-cmd -c "/gcds/configs/${CONFIG_FILE}" "$@"

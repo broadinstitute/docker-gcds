@@ -3,6 +3,6 @@
 # shellcheck disable=SC2034
 DATA_DIR='/path/to/GCDS/data'
 DOCKER_SOCKET='/var/run/docker.sock'
-GADS_IMAGE='broadinstitute/gads:latest'
+GCDS_IMAGE='broadinstitute/gcds:latest'
 LOG_DIR='/path/to/logs'
 XAUTHORITY="${HOME}/.Xauthority"

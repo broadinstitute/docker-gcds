@@ -47,5 +47,5 @@ $SUDO docker run $TTY --rm \
        --hostname gcds \
        -v "${CONFIG_DIR}":/gcds/configs \
        -v "${PREFS_DIR}":/root/.java \
-       "${GADS_IMAGE}" \
+       "${GCDS_IMAGE}" \
       /gcds/encrypt-util -c "/gcds/configs/${CONFIG_FILE}"
