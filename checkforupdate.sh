@@ -1,9 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
-SCRIPT_DIR="$( cd -P "$( dirname "$BASH_SOURCE[0]" )" && pwd )"
+SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck source=/dev/null
 source "${SCRIPT_DIR}/config.sh"
 
-if [ "$TERM" != "dumb" ];
+if [ "$TERM" != 'dumb' ];
 then
     TTY='-it'
 fi
@@ -14,5 +15,5 @@ then
 fi
 
 $SUDO docker run $TTY --rm \
-       $GADS_IMAGE \
+       "${GCDS_IMAGE}" \
        /gcds/checkforupdate

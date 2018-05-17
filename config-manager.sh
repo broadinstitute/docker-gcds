@@ -1,11 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 usage() {
-    PROG="$(basename $0)"
+    PROG=$(basename "$0")
     echo "usage: ${PROG}"
 }
 
-SCRIPT_DIR="$( cd -P "$( dirname "$BASH_SOURCE[0]" )" && pwd )"
+SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck source=/dev/null
 source "${SCRIPT_DIR}/config.sh"
 
 if [ -z "${DISPLAY}" ]; then
@@ -14,7 +15,7 @@ if [ -z "${DISPLAY}" ]; then
 fi
 
 if [ ! -f "${XAUTHORITY}" ]; then
-    echo "The Xauthority file `${XAUTHORITY}`  does not exist"
+    echo "The Xauthority file '${XAUTHORITY}'  does not exist"
     echo "Try connecting correctly using SSH with X11 Forwarding"
     exit 2
 fi
@@ -27,33 +28,29 @@ fi
 PREFS_DIR="${DATA_DIR}/.java"
 CONFIG_DIR="${DATA_DIR}/configs"
 
-if [ ! -d "${PREFS_DIR}" ];
-then
+if [ ! -d "${PREFS_DIR}" ]; then
     echo "Java preferences directory ${PREFS_DIR} not found...exiting"
     exit 4
 fi
 
-if [ ! -d "${CONFIG_DIR}" ];
-then
+if [ ! -d "${CONFIG_DIR}" ]; then
     echo "Config directory ${CONFIG_DIR} not found...exiting"
     exit 5
 fi
 
-if [ "$TERM" != "dumb" ];
-then
+if [ "$TERM" != "dumb" ]; then
     TTY='-it'
 fi
 
-if [ ! -w "${DOCKER_SOCKET}" ];
-then
+if [ ! -w "${DOCKER_SOCKET}" ]; then
     SUDO='sudo'
 fi
 
 $SUDO docker run $TTY --rm \
-       -e DISPLAY=$DISPLAY \
-       -v $XAUTHORITY:/root/.Xauthority \
-       -v $CONFIG_DIR:/gcds/configs \
-       -v $PREFS_DIR:/root/.java \
+       -e DISPLAY="${DISPLAY}" \
+       -v "${XAUTHORITY}:/root/.Xauthority" \
+       -v "${CONFIG_DIR}:/gcds/configs" \
+       -v "${PREFS_DIR}:/root/.java" \
        --net=host \
-       $GADS_IMAGE \
+       "${GCDS_IMAGE}" \
        /gcds/config-manager
